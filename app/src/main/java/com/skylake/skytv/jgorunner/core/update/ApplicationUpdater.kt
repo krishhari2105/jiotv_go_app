@@ -53,8 +53,7 @@ object ApplicationUpdater {
     suspend fun fetchReleaseAssetForEdition(wantLite: Boolean): DownloadAsset? =
         withContext(Dispatchers.IO) {
             try {
-                val url =
-                    "https://api.github.com/repos/JioTV-Go/jiotv_go_app/releases/latest"
+                val url = ReleaseRepositories.latestReleaseURL(ReleaseRepositories.APP)
                 val response = URL(url).readText()
                 val json = JSONObject(response)
                 val tagName = json.getString("tag_name")

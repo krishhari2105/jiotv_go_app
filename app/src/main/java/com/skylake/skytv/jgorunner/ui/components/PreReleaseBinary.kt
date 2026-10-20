@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.skylake.skytv.jgorunner.R
 import com.skylake.skytv.jgorunner.core.update.DownloadModelNew
+import com.skylake.skytv.jgorunner.core.update.ReleaseRepositories
 import com.skylake.skytv.jgorunner.core.update.Status
 import com.skylake.skytv.jgorunner.data.SkySharedPref
 import com.skylake.skytv.jgorunner.utils.CustButton
@@ -230,7 +231,7 @@ suspend fun fetchGithubReleases(): List<String> = withContext(Dispatchers.IO) {
     try {
         val client = OkHttpClient()
         val request = Request.Builder()
-            .url("https://api.github.com/repos/JioTV-Go/jiotv_go/releases")
+            .url(ReleaseRepositories.releasesURL(ReleaseRepositories.SERVER))
             .build()
         client.newCall(request).execute().use { response ->
             if (!response.isSuccessful) return@withContext emptyList()
@@ -257,7 +258,7 @@ suspend fun performSelectedBinaryUpdate(
     onDownloadStatusUpdate: (DownloadModelNew) -> Unit
 ): Boolean = withContext(Dispatchers.IO) {
     try {
-        val releasesResponse = URL("https://api.github.com/repos/JioTV-Go/jiotv_go/releases").readText()
+        val releasesResponse = URL(ReleaseRepositories.releasesURL(ReleaseRepositories.SERVER)).readText()
         val releasesArray = JSONArray(releasesResponse)
         var selectedRelease: JSONObject? = null
         var assetFileName = ""

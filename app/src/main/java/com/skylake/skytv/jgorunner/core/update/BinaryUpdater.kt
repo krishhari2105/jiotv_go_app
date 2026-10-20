@@ -47,7 +47,7 @@ object BinaryUpdater {
 
         try {
             lastFailureReason = null
-            val url = "https://api.github.com/repos/JioTV-Go/jiotv_go/releases/latest"
+            val url = ReleaseRepositories.latestReleaseURL(ReleaseRepositories.SERVER)
             val response = URL(url).readText()
             val json = JSONObject(response)
             val tagName = json.getString("tag_name")
